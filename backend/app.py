@@ -8,7 +8,7 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 import gdown
-from torch.quantization import quantize_dynamic
+from torch.quantization import quantize_dynamic 
 
 MODEL_DIR = "backend"
 MODEL_PATH = os.path.join(MODEL_DIR, "plant_disease_model_1_latest.pt")
