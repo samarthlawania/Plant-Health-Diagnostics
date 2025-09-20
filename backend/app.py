@@ -7,14 +7,26 @@ from PIL import Image
 from flask_cors import CORS
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
+import gdown
 
+MODEL_DIR = "backend"
+MODEL_PATH = os.path.join(MODEL_DIR, "plant_disease_model_1_latest.pt")
+MODEL_URL = "https://drive.google.com/uc?id=1w5CqNR-QQo57_d2ls8n6pZTV1SFbpPub"
 # Load disease and supplement information
 disease_info = pd.read_csv('./disease_info.csv', encoding='cp1252')
 supplement_info = pd.read_csv('./supplement_info.csv', encoding='cp1252')
 
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        os.makedirs(MODEL_DIR, exist_ok=True)
+        print("Downloading model from Google Drive...")
+        gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+    else:
+        print("Model already exists locally.")
 # Load the model
+download_model()
 model = CNN.CNN(39)
-model.load_state_dict(torch.load("./plant_disease_model_1_latest.pt"))
+model.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device("cpu")))
 model.eval()
 
 def preprocess_image(image_path):
