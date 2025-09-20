@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 import gdown
+from torch.quantization import quantize_dynamic
 
 MODEL_DIR = "backend"
 MODEL_PATH = os.path.join(MODEL_DIR, "plant_disease_model_1_latest.pt")
@@ -28,6 +29,9 @@ download_model()
 model = CNN.CNN(39)
 model.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device("cpu")))
 model.eval()
+model = torch.quantization.quantize_dynamic(
+    model, {torch.nn.Linear}, dtype=torch.qint8
+)
 
 def preprocess_image(image_path):
     """Preprocess the image for model prediction."""
