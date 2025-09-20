@@ -16,7 +16,7 @@ MODEL_URL = "https://drive.google.com/uc?id=1w5CqNR-QQo57_d2ls8n6pZTV1SFbpPub"
 disease_info = pd.read_csv('./disease_info.csv', encoding='cp1252')
 supplement_info = pd.read_csv('./supplement_info.csv', encoding='cp1252')
 
-def download_model():
+def download_model(): 
     if not os.path.exists(MODEL_PATH):
         os.makedirs(MODEL_DIR, exist_ok=True)
         print("Downloading model from Google Drive...")
